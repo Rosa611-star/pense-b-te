@@ -2,11 +2,19 @@ import NoteItem from './NoteItem';
 
 function NoteList({ notes, onEdit, onDelete }) {
     if (notes.length === 0) {
-        return <p>Aucune note pour l'instant. Créez-en une ! 📝</p>;
+        return (
+            <div className="note-empty">
+                <span className="note-empty-icon">📋</span>
+                <p className="note-empty-text">Aucune note trouvée</p>
+                <p className="note-empty-sub">
+                    Créez votre première note à l'aide du formulaire ci-dessus.
+                </p>
+            </div>
+        );
     }
 
     return (
-        <div>
+        <div className="note-list">
             {notes.map(note => (
                 <NoteItem
                     key={note.id}

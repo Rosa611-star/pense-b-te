@@ -1,42 +1,60 @@
-// Couleur du badge selon la priorité
-const badgeColor = {
-    Basse:   'green',
-    Moyenne: 'orange',
-    Haute:   'red',
+const BADGE = {
+    Haute:   'badge badge-high',
+    Moyenne: 'badge badge-medium',
+    Basse:   'badge badge-low',
 };
 
 function NoteItem({ note, onEdit, onDelete }) {
     const date = new Date(note.created_at).toLocaleDateString('fr-FR', {
-        day: 'numeric', month: 'long', year: 'numeric'
+        day: 'numeric', month: 'long', year: 'numeric',
     });
 
-    return (
-        <div style={{ border: '1px solid #ccc', borderRadius: '8px',
-            padding: '15px', marginBottom: '10px' }}>
+    const handleDelete = () => {
+        if (window.confirm(`Supprimer la note "${note.title}" ?`)) {
+            onDelete(note.id);
+        }
+    };
 
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <h3 style={{ margin: 0 }}>{note.title}</h3>
-                <span style={{
-                    background: badgeColor[note.priority],
-                    color: 'white', padding: '2px 10px',
-                    borderRadius: '12px', fontSize: '12px'
-                }}>
+    return (
+        <article className="note-card">
+            <div className="note-card-header">
+                <h3 className="note-card-title">{note.title}</h3>
+                <span className={BADGE[note.priority] ?? 'badge'}>
+                    {note.priority === 'Haute'   && '▲ '}
+                    {note.priority === 'Moyenne' && '● '}
+                    {note.priority === 'Basse'   && '▼ '}
                     {note.priority}
                 </span>
             </div>
 
-            {note.content && <p style={{ margin: '8px 0' }}>{note.content}</p>}
-            <small style={{ color: '#888' }}>📅 {date}</small>
+            {note.content && (
+                <p className="note-card-content">{note.content}</p>
+            )}
 
-            <div style={{ marginTop: '10px' }}>
-                <button onClick={() => onEdit(note)} style={{ marginRight: '8px' }}>
-                    ✏️ Modifier
-                </button>
-                <button onClick={() => onDelete(note.id)} style={{ color: 'red' }}>
-                    🗑️ Supprimer
-                </button>
+            <div className="note-card-footer">
+                <span className="note-card-date">
+                    📅 {date}
+                </span>
+                <div className="note-card-actions">
+                    <button
+                        className="btn btn-ghost btn-sm"
+                        onClick={() => onEdit(note)}
+                        title="Modifier"
+                        aria-label={`Modifier la note "${note.title}"`}
+                    >
+                        ✏️ Modifier
+                    </button>
+                    <button
+                        className="btn btn-danger btn-sm"
+                        onClick={handleDelete}
+                        title="Supprimer"
+                        aria-label={`Supprimer la note "${note.title}"`}
+                    >
+                        🗑 Supprimer
+                    </button>
+                </div>
             </div>
-        </div>
+        </article>
     );
 }
 
