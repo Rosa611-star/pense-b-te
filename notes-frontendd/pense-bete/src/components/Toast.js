@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-
+import { useState, useCallback } from 'react';
 /**
  * Toast notification component.
  * @param {{ toasts: Array, removeToast: Function }} props
@@ -35,7 +35,7 @@ function Toast({ toast, onClose }) {
  * Custom hook to manage toasts.
  * Returns { toasts, toast } where toast(msg, type) creates a notification.
  */
-import { useState, useCallback } from 'react';
+
 
 export function useToast() {
     const [toasts, setToasts] = useState([]);
